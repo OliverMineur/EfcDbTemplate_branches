@@ -7,6 +7,8 @@ using Microsoft.Extensions.Configuration;
 using System.Threading.Tasks;
 using System.Data.Common;
 
+using Seido.Utilities.SeedGenerator;
+
 using Configuration;
 using Models;
 using DbContext;
@@ -79,7 +81,7 @@ namespace AppConsole
 
     private static List<MusicGroup> SeedModel(int nrItems)
     {
-        var _seeder = new csSeedGenerator();
+        var _seeder = new SeedGenerator();
 
         //Create a list of 20 great bands
         var _musicgroups = _seeder.ItemsToList<MusicGroup>(nrItems);

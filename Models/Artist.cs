@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using Microsoft.EntityFrameworkCore;
 using System.ComponentModel.DataAnnotations;
+using Seido.Utilities.SeedGenerator;
 
 namespace Models
 {
@@ -20,7 +21,7 @@ namespace Models
         #region Random Seeding
         public bool Seeded { get; set; } = false;
 
-        public Artist Seed(csSeedGenerator _seeder)
+        public Artist Seed(SeedGenerator _seeder)
         {
             return new Artist
             {
