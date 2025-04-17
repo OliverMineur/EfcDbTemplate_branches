@@ -5,7 +5,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace Models
 {
-	public class csAlbum : ISeed<csAlbum>
+	public class Album : ISeed<Album>
 	{
         [Key]
         public Guid AlbumId {get; set;}
@@ -15,14 +15,14 @@ namespace Models
         public int CopiesSold { get; set;}
 
         //Navigation property one-to-one
-		public csMusicGroup  MusicGroups { get; set; }
+		public MusicGroup  MusicGroups { get; set; }
     
         #region Random Seeding
         public bool Seeded { get; set; } = false;
 
-        public csAlbum Seed(csSeedGenerator _seeder)
+        public Album Seed(csSeedGenerator _seeder)
         {
-            return new csAlbum
+            return new Album
             {
                 AlbumId = Guid.NewGuid(),
 

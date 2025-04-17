@@ -62,7 +62,7 @@ namespace DbContext.Migrations.SqlServerDbContext
                 });
 
             migrationBuilder.CreateTable(
-                name: "csArtistcsMusicGroup",
+                name: "ArtistMusicGroup",
                 columns: table => new
                 {
                     MembersArtistId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
@@ -70,15 +70,15 @@ namespace DbContext.Migrations.SqlServerDbContext
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_csArtistcsMusicGroup", x => new { x.MembersArtistId, x.MusicGroupsMusicGroupId });
+                    table.PrimaryKey("PK_ArtistMusicGroup", x => new { x.MembersArtistId, x.MusicGroupsMusicGroupId });
                     table.ForeignKey(
-                        name: "FK_csArtistcsMusicGroup_Artists_MembersArtistId",
+                        name: "FK_ArtistMusicGroup_Artists_MembersArtistId",
                         column: x => x.MembersArtistId,
                         principalTable: "Artists",
                         principalColumn: "ArtistId",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_csArtistcsMusicGroup_MusicGroups_MusicGroupsMusicGroupId",
+                        name: "FK_ArtistMusicGroup_MusicGroups_MusicGroupsMusicGroupId",
                         column: x => x.MusicGroupsMusicGroupId,
                         principalTable: "MusicGroups",
                         principalColumn: "MusicGroupId",
@@ -91,8 +91,8 @@ namespace DbContext.Migrations.SqlServerDbContext
                 column: "MusicGroupsMusicGroupId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_csArtistcsMusicGroup_MusicGroupsMusicGroupId",
-                table: "csArtistcsMusicGroup",
+                name: "IX_ArtistMusicGroup_MusicGroupsMusicGroupId",
+                table: "ArtistMusicGroup",
                 column: "MusicGroupsMusicGroupId");
         }
 
@@ -103,7 +103,7 @@ namespace DbContext.Migrations.SqlServerDbContext
                 name: "Albums");
 
             migrationBuilder.DropTable(
-                name: "csArtistcsMusicGroup");
+                name: "ArtistMusicGroup");
 
             migrationBuilder.DropTable(
                 name: "Artists");

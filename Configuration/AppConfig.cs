@@ -9,14 +9,14 @@ namespace Configuration;
 //csAppConfig will contain all configuration in our example
 //but it could be segmented into several classes, each with its own
 //configuration responisibily
-public sealed class csAppConfig
+public sealed class AppConfig
 {
     public const string Appsettingfile = "appsettings.json";
 
     #region Singleton design pattern
     private static readonly object instanceLock = new();
 
-    private static csAppConfig _instance = null;
+    private static AppConfig _instance = null;
     private static IConfigurationRoot _configuration = null;
     #endregion
 
@@ -25,7 +25,7 @@ public sealed class csAppConfig
     private static List<DbSetDetail> _dbSets = new List<DbSetDetail>();
     #endregion
 
-    private csAppConfig()
+    private AppConfig()
     {
 
         //Create  ConfigurationRoot 
@@ -50,7 +50,7 @@ public sealed class csAppConfig
             {
                 if (_instance == null)
                 {
-                    _instance = new csAppConfig();
+                    _instance = new AppConfig();
                 }
                 return _configuration;
             }
@@ -65,7 +65,7 @@ public sealed class csAppConfig
             {
                 if (_instance == null)
                 {
-                    _instance = new csAppConfig();
+                    _instance = new AppConfig();
                 }
                 return _dbSetActive;
             }
@@ -78,6 +78,6 @@ public class DbSetDetail
     public string DbLocation { get; set; }
     public string DbServer { get; set; }
     public string DbConnection { get; set; }
-    public string DbConnectionString => csAppConfig.ConfigurationRoot.GetConnectionString(DbConnection);
+    public string DbConnectionString => AppConfig.ConfigurationRoot.GetConnectionString(DbConnection);
 
 }

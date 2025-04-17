@@ -11,8 +11,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace DbContext.Migrations.SqlServerDbContext
 {
-    [DbContext(typeof(csMainDbContext.SqlServerDbContext))]
-    [Migration("20250417094116_miInitial")]
+    [DbContext(typeof(MainDbContext.SqlServerDbContext))]
+    [Migration("20250417094655_miInitial")]
     partial class miInitial
     {
         /// <inheritdoc />
@@ -25,7 +25,22 @@ namespace DbContext.Migrations.SqlServerDbContext
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
 
-            modelBuilder.Entity("Models.csAlbum", b =>
+            modelBuilder.Entity("ArtistMusicGroup", b =>
+                {
+                    b.Property<Guid>("MembersArtistId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid>("MusicGroupsMusicGroupId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.HasKey("MembersArtistId", "MusicGroupsMusicGroupId");
+
+                    b.HasIndex("MusicGroupsMusicGroupId");
+
+                    b.ToTable("ArtistMusicGroup");
+                });
+
+            modelBuilder.Entity("Models.Album", b =>
                 {
                     b.Property<Guid>("AlbumId")
                         .ValueGeneratedOnAdd()
@@ -53,7 +68,7 @@ namespace DbContext.Migrations.SqlServerDbContext
                     b.ToTable("Albums");
                 });
 
-            modelBuilder.Entity("Models.csArtist", b =>
+            modelBuilder.Entity("Models.Artist", b =>
                 {
                     b.Property<Guid>("ArtistId")
                         .ValueGeneratedOnAdd()
@@ -76,7 +91,7 @@ namespace DbContext.Migrations.SqlServerDbContext
                     b.ToTable("Artists");
                 });
 
-            modelBuilder.Entity("Models.csMusicGroup", b =>
+            modelBuilder.Entity("Models.MusicGroup", b =>
                 {
                     b.Property<Guid>("MusicGroupId")
                         .ValueGeneratedOnAdd()
@@ -96,46 +111,31 @@ namespace DbContext.Migrations.SqlServerDbContext
                     b.ToTable("MusicGroups");
                 });
 
-            modelBuilder.Entity("csArtistcsMusicGroup", b =>
+            modelBuilder.Entity("ArtistMusicGroup", b =>
                 {
-                    b.Property<Guid>("MembersArtistId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<Guid>("MusicGroupsMusicGroupId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.HasKey("MembersArtistId", "MusicGroupsMusicGroupId");
-
-                    b.HasIndex("MusicGroupsMusicGroupId");
-
-                    b.ToTable("csArtistcsMusicGroup");
-                });
-
-            modelBuilder.Entity("Models.csAlbum", b =>
-                {
-                    b.HasOne("Models.csMusicGroup", "MusicGroups")
-                        .WithMany("Albums")
-                        .HasForeignKey("MusicGroupsMusicGroupId");
-
-                    b.Navigation("MusicGroups");
-                });
-
-            modelBuilder.Entity("csArtistcsMusicGroup", b =>
-                {
-                    b.HasOne("Models.csArtist", null)
+                    b.HasOne("Models.Artist", null)
                         .WithMany()
                         .HasForeignKey("MembersArtistId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("Models.csMusicGroup", null)
+                    b.HasOne("Models.MusicGroup", null)
                         .WithMany()
                         .HasForeignKey("MusicGroupsMusicGroupId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("Models.csMusicGroup", b =>
+            modelBuilder.Entity("Models.Album", b =>
+                {
+                    b.HasOne("Models.MusicGroup", "MusicGroups")
+                        .WithMany("Albums")
+                        .HasForeignKey("MusicGroupsMusicGroupId");
+
+                    b.Navigation("MusicGroups");
+                });
+
+            modelBuilder.Entity("Models.MusicGroup", b =>
                 {
                     b.Navigation("Albums");
                 });

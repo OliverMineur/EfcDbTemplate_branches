@@ -9,54 +9,54 @@ namespace DbContext;
 //DbContext namespace is a fundamental EFC layer of the database context and is
 //used for all Database connection as well as for EFC CodeFirst migration and database updates 
 
-public class csMainDbContext : Microsoft.EntityFrameworkCore.DbContext
+public class MainDbContext : Microsoft.EntityFrameworkCore.DbContext
 {
     #region class - Table mapping
-    public DbSet<csMusicGroup> MusicGroups { get; set; }
-    public DbSet<csArtist> Artists { get; set; }
-    public DbSet<csAlbum> Albums { get; set; }
+    public DbSet<MusicGroup> MusicGroups { get; set; }
+    public DbSet<Artist> Artists { get; set; }
+    public DbSet<Album> Albums { get; set; }
     #endregion
 
     #region get right DBContext from DbSet configuration in Appsettings
-    public static DbContextOptionsBuilder<csMainDbContext> DbContextOptions()
+    public static DbContextOptionsBuilder<MainDbContext> DbContextOptions()
     {
-        var _optionsBuilder = new DbContextOptionsBuilder<csMainDbContext>();
+        var _optionsBuilder = new DbContextOptionsBuilder<MainDbContext>();
 
-        if (csAppConfig.DbSetActive.DbServer == "SQLServer")
+        if (AppConfig.DbSetActive.DbServer == "SQLServer")
         {
-            _optionsBuilder.UseSqlServer(csAppConfig.DbSetActive.DbConnectionString,
+            _optionsBuilder.UseSqlServer(AppConfig.DbSetActive.DbConnectionString,
                     options => options.EnableRetryOnFailure());
             return _optionsBuilder;
         }
-        else if (csAppConfig.DbSetActive.DbServer == "MariaDb")
+        else if (AppConfig.DbSetActive.DbServer == "MariaDb")
         {
-            _optionsBuilder.UseMySql(csAppConfig.DbSetActive.DbConnectionString, ServerVersion.AutoDetect(csAppConfig.DbSetActive.DbConnectionString));
+            _optionsBuilder.UseMySql(AppConfig.DbSetActive.DbConnectionString, ServerVersion.AutoDetect(AppConfig.DbSetActive.DbConnectionString));
             return _optionsBuilder;
         }
-        else if (csAppConfig.DbSetActive.DbServer == "Postgres")
+        else if (AppConfig.DbSetActive.DbServer == "Postgres")
         {
-            _optionsBuilder.UseNpgsql(csAppConfig.DbSetActive.DbConnectionString);
+            _optionsBuilder.UseNpgsql(AppConfig.DbSetActive.DbConnectionString);
             return _optionsBuilder;
         }
-        else if (csAppConfig.DbSetActive.DbServer == "SQLite")
+        else if (AppConfig.DbSetActive.DbServer == "SQLite")
         {
-            _optionsBuilder.UseSqlite(csAppConfig.DbSetActive.DbConnectionString);
+            _optionsBuilder.UseSqlite(AppConfig.DbSetActive.DbConnectionString);
             return _optionsBuilder;
         }
 
         //unknown database type
-        throw new InvalidDataException($"Database type {csAppConfig.DbSetActive.DbServer} does not exist");
+        throw new InvalidDataException($"Database type {AppConfig.DbSetActive.DbServer} does not exist");
     }
 
     //Given a userlogin, this method finds the LoginDetails in the Active DbSet and return a DbContext
-    public static csMainDbContext DbContext() =>
-        new csMainDbContext(csMainDbContext.DbContextOptions().Options);
+    public static MainDbContext DbContext() =>
+        new MainDbContext(MainDbContext.DbContextOptions().Options);
 
     #endregion
 
     #region constructors
-    public csMainDbContext() { }
-    public csMainDbContext(DbContextOptions options) : base(options)
+    public MainDbContext() { }
+    public MainDbContext(DbContextOptions options) : base(options)
     { }
     #endregion
 
@@ -67,7 +67,7 @@ public class csMainDbContext : Microsoft.EntityFrameworkCore.DbContext
     }
 
     #region DbContext for some popular databases
-    public class SqlServerDbContext : csMainDbContext
+    public class SqlServerDbContext : MainDbContext
     {
         public SqlServerDbContext() { }
         public SqlServerDbContext(DbContextOptions options) : base(options)
@@ -79,7 +79,7 @@ public class csMainDbContext : Microsoft.EntityFrameworkCore.DbContext
         {
             if (!optionsBuilder.IsConfigured)
             {
-                var connectionString = csAppConfig.DbSetActive.DbConnectionString;
+                var connectionString = AppConfig.DbSetActive.DbConnectionString;
                 optionsBuilder.UseSqlServer(connectionString,
                     options => options.EnableRetryOnFailure());
                     
@@ -105,7 +105,7 @@ public class csMainDbContext : Microsoft.EntityFrameworkCore.DbContext
 
     }
 
-    public class MySqlDbContext : csMainDbContext
+    public class MySqlDbContext : MainDbContext
     {
         public MySqlDbContext() { }
         public MySqlDbContext(DbContextOptions options) : base(options)
@@ -117,7 +117,7 @@ public class csMainDbContext : Microsoft.EntityFrameworkCore.DbContext
         {
             if (!optionsBuilder.IsConfigured)
             {
-                var connectionString = csAppConfig.DbSetActive.DbConnectionString;
+                var connectionString = AppConfig.DbSetActive.DbConnectionString;
                 optionsBuilder.UseMySql(connectionString, ServerVersion.AutoDetect(connectionString));
             }
             base.OnConfiguring(optionsBuilder);
@@ -132,7 +132,7 @@ public class csMainDbContext : Microsoft.EntityFrameworkCore.DbContext
         }
     }
 
-    public class PostgresDbContext : csMainDbContext
+    public class PostgresDbContext : MainDbContext
     {
         public PostgresDbContext() { }
         public PostgresDbContext(DbContextOptions options) : base(options)
@@ -144,7 +144,7 @@ public class csMainDbContext : Microsoft.EntityFrameworkCore.DbContext
         {
             if (!optionsBuilder.IsConfigured)
             {
-                var connectionString = csAppConfig.DbSetActive.DbConnectionString;
+                var connectionString = AppConfig.DbSetActive.DbConnectionString;
                 optionsBuilder.UseNpgsql(connectionString);
             }
             base.OnConfiguring(optionsBuilder);
@@ -157,7 +157,7 @@ public class csMainDbContext : Microsoft.EntityFrameworkCore.DbContext
         }
     }
 
-    public class SqliteDbContext : csMainDbContext
+    public class SqliteDbContext : MainDbContext
     {
         public SqliteDbContext() { }
         public SqliteDbContext(DbContextOptions options) : base(options)
@@ -169,7 +169,7 @@ public class csMainDbContext : Microsoft.EntityFrameworkCore.DbContext
         {
             if (!optionsBuilder.IsConfigured)
             {
-                var connectionString = csAppConfig.DbSetActive.DbConnectionString;
+                var connectionString = AppConfig.DbSetActive.DbConnectionString;
                 optionsBuilder.UseSqlite(connectionString);
             }
             base.OnConfiguring(optionsBuilder);

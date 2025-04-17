@@ -5,7 +5,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace Models
 {
-	public class csArtist : ISeed<csArtist>
+	public class Artist : ISeed<Artist>
 	{
         [Key]
         public Guid ArtistId {get; set;}
@@ -15,14 +15,14 @@ namespace Models
         public DateTime? BirthDay { get; set; }
         
         //Navigation property many-to-many
-		public List<csMusicGroup>  MusicGroups { get; set; }
+		public List<MusicGroup>  MusicGroups { get; set; }
 
         #region Random Seeding
         public bool Seeded { get; set; } = false;
 
-        public csArtist Seed(csSeedGenerator _seeder)
+        public Artist Seed(csSeedGenerator _seeder)
         {
-            return new csArtist
+            return new Artist
             {
                 ArtistId = Guid.NewGuid(),
 
