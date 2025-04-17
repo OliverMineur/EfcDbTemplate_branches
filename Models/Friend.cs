@@ -38,7 +38,7 @@ namespace Models
 
             if (Pets != null)
             {
-                sRet += $". Has pets ";
+                sRet += $". Has {Pets.Count} pets: ";
                 foreach (var pet in Pets)
                 {
                     sRet += $"{pet}, ";
