@@ -18,6 +18,6 @@ dotnet ef database update -c SqlServerDbContext -p ../DbContext -s ../DbContext
 
 if [[ $1 == "seed" ]]; then
     #seed the database
-    cd ../AppConsole
+    cd ../AppSeeder
     dotnet run
 fi
