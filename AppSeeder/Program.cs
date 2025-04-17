@@ -64,57 +64,61 @@ namespace AppConsole
         }
 
 
-        #region Replaced by new model methods
-    private static void WriteModel(List<MusicGroup> _modelList)
-    {
-        Console.WriteLine($"Nr of great music bands: {_modelList.Count()}");
-        Console.WriteLine($"Total nr of albums produced: {_modelList.Sum(b => b.Albums.Count)}");
-        Console.WriteLine($"Total nr of music band members: {_modelList.Sum(b => b.Members.Count)}");
-
-        Console.WriteLine($"First Music group: {_modelList.First()}");
-        _modelList.First().Albums.ForEach(album => Console.WriteLine($"  - {album.Name}"));
-
-        Console.WriteLine($"Last Music group: {_modelList.Last()}");
-        _modelList.Last().Albums.ForEach(album => Console.WriteLine($"  - {album.Name}"));
-
-    }
-
-    private static List<MusicGroup> SeedModel(int nrItems)
-    {
-        var _seeder = new SeedGenerator();
-
-        //Create a list of 20 great bands
-        var _musicgroups = _seeder.ItemsToList<MusicGroup>(nrItems);
-        var _artists = _seeder.ItemsToList<Artist>(nrItems*8);
-
-        _musicgroups.ForEach(m => {
-
-            //pick 4 to 8 members from the list of _artists
-            m.Members = _seeder.UniqueIndexPickedFromList(_seeder.Next(4, 9), _artists);
-
-            //Create between 5 and 16 Albums
-            m.Albums = new List<Album>();
-            for (int i = 5; i < _seeder.Next(6, 17); i++)
-            {
-                m.Albums.Add(new Album().Seed(_seeder));
-            }
-
-            m.EstablishedYear = m.Albums.Min(a => a.ReleaseYear);
-        });
-
-        return _musicgroups;
-    }
-        #endregion
-
         #region Update to reflect you new Model
-        private static async Task SeedDataBase(List<MusicGroup> _modelList)
+        private static void WriteModel(List<Friend> _modelList)
+        {
+            Console.WriteLine($"NrOfFriends: {_modelList.Count()}");
+            Console.WriteLine($"NrOfFriends without any pets: {_modelList.Count(
+                f => f.Pets == null || f.Pets?.Count == 0)}");
+            Console.WriteLine($"NrOfFriends without an adress: {_modelList.Count(
+                f => f.Address == null)}");
+               
+            Console.WriteLine($"First Friend: {_modelList.First()}");
+            Console.WriteLine($"Last Friend: {_modelList.Last()}");
+        }
+
+        private static List<Friend> SeedModel(int nrItems)
+        {
+            var _seeder = new SeedGenerator();
+            
+            //Create a list of friends, adresses and pets
+            var _goodfriends = _seeder.ItemsToList<Friend>(nrItems);
+            var _adresses = _seeder.ItemsToList<Address>(nrItems);
+
+            var _quotes = _seeder.AllQuotes.Select (q => new Quote() { QuoteText = q.Quote, Author = q.Author}).ToList(); 
+
+            //Assign adress and pet to friends
+            for (int i = 0; i < nrItems; i++)
+            {
+                //assign an address randomly
+                _goodfriends[i].Address = (_seeder.Bool) ? _seeder.FromList(_adresses) :null;
+
+                //Create between 0 and 3 pets
+                var _pets = new List<Pet>();
+                for (int c = 0; c < _seeder.Next(0,4); c++)
+                {
+                    _pets.Add(new Pet().Seed(_seeder)); 
+                }
+                _goodfriends[i].Pets = (_pets.Count > 0) ? _pets : null;
+
+                //Quotes
+                _goodfriends[i].Quotes = new List<Quote>();
+                for (int c = 0; c < _seeder.Next(0,6); c++)
+                {
+                    var _q = _seeder.FromList(_quotes); 
+                    _goodfriends[i].Quotes.Add(_q);
+                }
+            }
+            return _goodfriends;
+        }
+        private static async Task SeedDataBase(List<Friend> _modelList)
         {
             using (var db = MainDbContext.DbContext())
             {
                 #region move the seeded model into the database using EFC
-                foreach (var _friend in _modelList)
+                foreach (var item in _modelList)
                 {
-                    db.MusicGroups.Add(_friend);
+                    db.Friends.Add(item);
                 }
                 #endregion
 
@@ -128,9 +132,10 @@ namespace AppConsole
             using (var db = MainDbContext.DbContext())
             {
                 #region Reading the database using EFC
-                var _modelList = await db.MusicGroups
-                    .Include(mg => mg.Albums)
-                    .Include(mg => mg.Members)
+                var _modelList = await db.Friends
+                    .Include(item => item.Address)
+                    .Include(item => item.Pets)
+                    .Include(item => item.Quotes)
                     .ToListAsync();                
                 #endregion
 
