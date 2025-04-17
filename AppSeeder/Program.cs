@@ -32,10 +32,10 @@ namespace AppConsole
             #region run below to test the model only
 
             Console.WriteLine($"\nSeeding the Model...");
-            var _modelList = SeedModel(nrItemsSeed);
+            var modelList = SeedModel(nrItemsSeed);
 
             Console.WriteLine($"\nTesting Model...");
-            WriteModel(_modelList);
+            WriteModel(modelList);
             #endregion
 
 
@@ -47,7 +47,7 @@ namespace AppConsole
             Console.WriteLine($"\nSeeding database...");
             try
             {
-                SeedDataBase(_modelList).Wait();
+                SeedDataBase(modelList).Wait();
             }
             catch (Exception ex)
             {
@@ -65,51 +65,51 @@ namespace AppConsole
 
 
         #region Update to reflect you new Model
-        private static void WriteModel(List<Friend> _modelList)
+        private static void WriteModel(List<Friend> modelList)
         {
-            Console.WriteLine($"NrOfFriends: {_modelList.Count()}");
-            Console.WriteLine($"NrOfFriends without any pets: {_modelList.Count(
+            Console.WriteLine($"NrOfFriends: {modelList.Count()}");
+            Console.WriteLine($"NrOfFriends without any pets: {modelList.Count(
                 f => f.Pets == null || f.Pets?.Count == 0)}");
-            Console.WriteLine($"NrOfFriends without an adress: {_modelList.Count(
+            Console.WriteLine($"NrOfFriends without an adress: {modelList.Count(
                 f => f.Address == null)}");
                
-            Console.WriteLine($"First Friend: {_modelList.First()}");
-            Console.WriteLine($"Last Friend: {_modelList.Last()}");
+            Console.WriteLine($"First Friend: {modelList.First()}");
+            Console.WriteLine($"Last Friend: {modelList.Last()}");
         }
 
         private static List<Friend> SeedModel(int nrItems)
         {
-            var _seeder = new SeedGenerator();
+            var seeder = new SeedGenerator();
             
             //Create a list of friends, adresses and pets
-            var _goodfriends = _seeder.ItemsToList<Friend>(nrItems);
-            var _adresses = _seeder.ItemsToList<Address>(nrItems);
+            var goodfriends = seeder.ItemsToList<Friend>(nrItems);
+            var addresses = seeder.ItemsToList<Address>(nrItems);
 
-            var _quotes = _seeder.AllQuotes.Select (q => new Quote() { QuoteText = q.Quote, Author = q.Author}).ToList(); 
+            var _quotes = seeder.AllQuotes.Select (q => new Quote() { QuoteText = q.Quote, Author = q.Author}).ToList(); 
 
             //Assign adress and pet to friends
             for (int i = 0; i < nrItems; i++)
             {
                 //assign an address randomly
-                _goodfriends[i].Address = (_seeder.Bool) ? _seeder.FromList(_adresses) :null;
+                goodfriends[i].Address = (seeder.Bool) ? seeder.FromList(addresses) :null;
 
                 //Create between 0 and 3 pets
                 var _pets = new List<Pet>();
-                for (int c = 0; c < _seeder.Next(0,4); c++)
+                for (int c = 0; c < seeder.Next(0,4); c++)
                 {
-                    _pets.Add(new Pet().Seed(_seeder)); 
+                    _pets.Add(new Pet().Seed(seeder)); 
                 }
-                _goodfriends[i].Pets = (_pets.Count > 0) ? _pets : null;
+                goodfriends[i].Pets = (_pets.Count > 0) ? _pets : null;
 
                 //Quotes
-                _goodfriends[i].Quotes = new List<Quote>();
-                for (int c = 0; c < _seeder.Next(0,6); c++)
+                goodfriends[i].Quotes = new List<Quote>();
+                for (int c = 0; c < seeder.Next(0,6); c++)
                 {
-                    var _q = _seeder.FromList(_quotes); 
-                    _goodfriends[i].Quotes.Add(_q);
+                    var q = seeder.FromList(_quotes); 
+                    goodfriends[i].Quotes.Add(q);
                 }
             }
-            return _goodfriends;
+            return goodfriends;
         }
         private static async Task SeedDataBase(List<Friend> _modelList)
         {
