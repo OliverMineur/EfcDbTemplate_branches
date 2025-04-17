@@ -64,49 +64,47 @@ namespace AppConsole
         }
 
 
-        #region Replaced by new model methods
-    private static void WriteModel(List<MusicGroup> _modelList)
-    {
-        Console.WriteLine($"Nr of great music bands: {_modelList.Count()}");
-        Console.WriteLine($"Total nr of albums produced: {_modelList.Sum(b => b.Albums.Count)}");
-        Console.WriteLine($"Total nr of music band members: {_modelList.Sum(b => b.Members.Count)}");
-
-        Console.WriteLine($"First Music group: {_modelList.First()}");
-        _modelList.First().Albums.ForEach(album => Console.WriteLine($"  - {album.Name}"));
-
-        Console.WriteLine($"Last Music group: {_modelList.Last()}");
-        _modelList.Last().Albums.ForEach(album => Console.WriteLine($"  - {album.Name}"));
-
-    }
-
-    private static List<MusicGroup> SeedModel(int nrItems)
-    {
-        var _seeder = new SeedGenerator();
-
-        //Create a list of 20 great bands
-        var _musicgroups = _seeder.ItemsToList<MusicGroup>(nrItems);
-        var _artists = _seeder.ItemsToList<Artist>(nrItems*8);
-
-        _musicgroups.ForEach(m => {
-
-            //pick 4 to 8 members from the list of _artists
-            m.Members = _seeder.UniqueIndexPickedFromList(_seeder.Next(4, 9), _artists);
-
-            //Create between 5 and 16 Albums
-            m.Albums = new List<Album>();
-            for (int i = 5; i < _seeder.Next(6, 17); i++)
-            {
-                m.Albums.Add(new Album().Seed(_seeder));
-            }
-
-            m.EstablishedYear = m.Albums.Min(a => a.ReleaseYear);
-        });
-
-        return _musicgroups;
-    }
-        #endregion
-
         #region Update to reflect you new Model
+        private static void WriteModel(List<MusicGroup> _modelList)
+        {
+            Console.WriteLine($"Nr of great music bands: {_modelList.Count()}");
+            Console.WriteLine($"Total nr of albums produced: {_modelList.Sum(b => b.Albums.Count)}");
+            Console.WriteLine($"Total nr of music band members: {_modelList.Sum(b => b.Members.Count)}");
+
+            Console.WriteLine($"First Music group: {_modelList.First()}");
+            _modelList.First().Albums.ForEach(album => Console.WriteLine($"  - {album.Name}"));
+
+            Console.WriteLine($"Last Music group: {_modelList.Last()}");
+            _modelList.Last().Albums.ForEach(album => Console.WriteLine($"  - {album.Name}"));
+
+        }
+
+        private static List<MusicGroup> SeedModel(int nrItems)
+        {
+            var _seeder = new SeedGenerator();
+
+            //Create a list of 20 great bands
+            var _musicgroups = _seeder.ItemsToList<MusicGroup>(nrItems);
+            var _artists = _seeder.ItemsToList<Artist>(nrItems*8);
+
+            _musicgroups.ForEach(m => {
+
+                //pick 4 to 8 members from the list of _artists
+                m.Members = _seeder.UniqueIndexPickedFromList(_seeder.Next(4, 9), _artists);
+
+                //Create between 5 and 16 Albums
+                m.Albums = new List<Album>();
+                for (int i = 5; i < _seeder.Next(6, 17); i++)
+                {
+                    m.Albums.Add(new Album().Seed(_seeder));
+                }
+
+                m.EstablishedYear = m.Albums.Min(a => a.ReleaseYear);
+            });
+
+            return _musicgroups;
+        }
+
         private static async Task SeedDataBase(List<MusicGroup> _modelList)
         {
             using (var db = MainDbContext.DbContext())
