@@ -1,0 +1,70 @@
+﻿Guide to Import another model
+------------------------------
+1. Copy this project into another project and rename it accordningly. 
+   Remove the .git file and create a new git repository
+
+2. Setup your database connections in appsettings.json in projects AppConsole and DbContext
+
+3. Import you models, In project Models,
+  - add your own models and make sure the namespace is Models.
+  - recompile should be OK
+
+4. Set you primary Keys in the models
+  - make sure each model has a primary Key of type GUID, notes as [Key]
+    For example
+      [Key]
+      public Guid FriendId {get; set;}
+
+  - make sure Navigation properties are setup to capture one-to-one, one-to-many,
+  many-to-one, or many-to-many
+    For example a many-to-one between tables Friends and Adresses
+    In Friends table
+      public csAdress Adress { get; set; } = null;
+    In Adress table
+      public List<csFriend> Residents{ get; set; } = null;
+
+  - recompile should be OK
+
+5. Setup EFC to use your new models. In project DbContext class csMainDbContext.cs
+    public class csMainDbContext : Microsoft.EntityFrameworkCore.DbContext
+    {
+        public DbSet<csMusicGroup> MusicGroups { get; set; }
+        public DbSet<csArtist> Artists { get; set; }
+        public DbSet<csAlbum> Albums { get; set; }
+
+        public MainDbContext() { }
+        public MainDbContext(DbContextOptions options) : base(options)
+        { }
+    }
+
+   - replace existing All DbSet<> models with you new models. 
+   - recompile should now indicate errors in program.cs. This is ok
+
+
+6. Remove your old model. In project Models
+   - Delete csFriend, csPet, Adress
+   - recompile should now indicate errors in program.cs. This is ok
+
+
+7. Modify Application to use your new models
+
+In project AppConsole
+    - Replace method WriteModel() and SeedModel() with the method from your Models Application
+    - In SeedingDatabase() Update the #region Seeding the database using EFC
+    - In QueryDatabaseAsync() Update the #region Reading the database using EFC
+
+- recompile should be OK
+- Comment all code in #region  run below only when Database i created
+
+- run AppConsole You should now see output of you model, seeded correctly and written to console
+
+
+8. Create your database
+
+- Proceed to guide "EFC migration commands.txt" to generate a database form your model
+
+
+9. Populate your database
+In AppConsole 
+- Remove comment for all code in #region  run below only when Database i created
+- run AppConsole You should now see your model seeded correctly and written to database
