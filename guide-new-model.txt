@@ -1,0 +1,58 @@
+﻿Guide to new model
+------------------------------
+1. Copy this branch to a new branch and rename it accordningly. 
+
+2. Setup your database connections in appsettings.json in projects AppSeeder and DbContext
+
+3. Setup your models in project Models,
+  - add your own models and make sure the namespace is Models.
+
+4. Set you primary Keys in the models
+  - make sure each model has a primary Key of type GUID, notes as [Key]
+    For example
+      [Key]
+      public Guid FriendId {get; set;}
+
+  - make sure Navigation properties are setup to capture one-to-one, one-to-many,
+    many-to-one, or many-to-many in ALL related classes
+    
+    For example below to set many-to-one between tables between Friends and Addresses
+    In Friends table
+      public Address Address { get; set; } = null;
+    In Address table
+      public List<Friend> Residents{ get; set; } = null;
+
+  - recompile should be OK
+
+5. Setup EFC to use your new models. In project DbContext class MainDbContext.cs
+    For example
+    public DbSet<Friend> Friends { get; set; }
+    public DbSet<Address> Addresses { get; set; }
+
+   - replace existing All DbSet<> models with you new models. 
+
+6. Remove any old model in project Models
+   - recompile should now indicate errors in program.cs. This is ok
+
+7. Modify AppSeeder to use your new models
+
+In project AppSeeder update bewlo methods to reflect your own model
+    - WriteModel()
+    - SeedModel()
+    - SeedingDatabase() 
+    - QueryDatabaseAsync() 
+
+- recompile should be OK
+
+8. Create your database
+
+In folder .scripts open a terminal and type
+./database-rebuild-all.sh
+
+- You should be able to see a created database and tables with Azure Data Studio
+
+
+9. Create and Populate your database
+
+In folder .scripts open a terminal and type
+./database-rebuild-all.sh seed
