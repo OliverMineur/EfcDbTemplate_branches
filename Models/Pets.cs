@@ -13,11 +13,7 @@ namespace Models
         public Guid PetId {get; set;}
 
         public AnimalKind AnimalKind { get; set; }
-        public string AnimalKindString
-        {
-            get => AnimalKind.ToString();
-            set { }  //set is needed by EFC. do nothing
-        }
+        public string AnimalKindString { get => AnimalKind.ToString(); set { }}  //set is needed by EFC. do nothing
 
         public AnimalMood AnimalMood { get; set; }
         public virtual string AnimalMoodString { get => AnimalMood.ToString(); set { } }
@@ -25,12 +21,10 @@ namespace Models
 		public string Name { get; set; }
         public int Age { get; set; }
         
-        public override string ToString() => $"{Name}, the {AnimalMood} {AnimalKind}, is {Age} years old";
-
-
         //Navigation property one-to-one
         public Friend Owner{ get; set; } = null;
 
+        public override string ToString() => $"{Name}, the {AnimalMood} {AnimalKind}, is {Age} years old";
 
         #region Random Seeding
         public bool Seeded { get; set; } = false;

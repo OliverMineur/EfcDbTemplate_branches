@@ -15,10 +15,10 @@ namespace Models
         public string City { get; set; }
         public string Country { get; set; }
 
-        public override string ToString() => $"{Street}, {ZipCode} {City}, {Country}";
-
         //Navigation property one-to-many
         public List<Friend> Residents{ get; set; } = null;
+
+        public override string ToString() => $"{Street}, {ZipCode} {City}, {Country}";
 
         #region Random Seeding
         public bool Seeded { get; set; } = false;
