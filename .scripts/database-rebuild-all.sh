@@ -2,6 +2,8 @@
 #To make the .sh file executable
 #sudo chmod +x ./database-rebuild-all.sh
 
+#./database-rebuild-all.sh [seed]
+
 #drop any database
 #NOTE - SQL on Azure do NOT drop the database to prevent extra charging
 #Instead drop the tables, views, stored procedures, schemas etc
