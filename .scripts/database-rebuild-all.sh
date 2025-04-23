@@ -1,6 +1,7 @@
 #!/bin/bash
 #To make the .sh file executable
 #sudo chmod +x ./database-rebuild-all.sh
+#test
 
 # ./database-rebuild-all.sh [seed]
 
