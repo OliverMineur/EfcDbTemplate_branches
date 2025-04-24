@@ -3,16 +3,16 @@ using System;
 using DbContext;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
-using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
+using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
 #nullable disable
 
-namespace DbContext.Migrations.MySqlDbContext
+namespace DbContext.Migrations.PostgresDbContext
 {
-    [DbContext(typeof(MainDbContext.MySqlDbContext))]
-    [Migration("20250423162216_miInitial")]
+    [DbContext(typeof(MainDbContext.PostgresDbContext))]
+    [Migration("20250424083734_miInitial")]
     partial class miInitial
     {
         /// <inheritdoc />
@@ -21,17 +21,17 @@ namespace DbContext.Migrations.MySqlDbContext
 #pragma warning disable 612, 618
             modelBuilder
                 .HasAnnotation("ProductVersion", "9.0.4")
-                .HasAnnotation("Relational:MaxIdentifierLength", 64);
+                .HasAnnotation("Relational:MaxIdentifierLength", 63);
 
-            MySqlModelBuilderExtensions.AutoIncrementColumns(modelBuilder);
+            NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);
 
             modelBuilder.Entity("FriendQuote", b =>
                 {
                     b.Property<Guid>("FriendsFriendId")
-                        .HasColumnType("char(36)");
+                        .HasColumnType("uuid");
 
                     b.Property<Guid>("QuotesQuoteId")
-                        .HasColumnType("char(36)");
+                        .HasColumnType("uuid");
 
                     b.HasKey("FriendsFriendId", "QuotesQuoteId");
 
@@ -44,7 +44,7 @@ namespace DbContext.Migrations.MySqlDbContext
                 {
                     b.Property<Guid>("AddressId")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("char(36)");
+                        .HasColumnType("uuid");
 
                     b.Property<string>("City")
                         .HasColumnType("varchar(200)");
@@ -53,13 +53,13 @@ namespace DbContext.Migrations.MySqlDbContext
                         .HasColumnType("varchar(200)");
 
                     b.Property<bool>("Seeded")
-                        .HasColumnType("tinyint(1)");
+                        .HasColumnType("boolean");
 
                     b.Property<string>("Street")
                         .HasColumnType("varchar(200)");
 
                     b.Property<int>("ZipCode")
-                        .HasColumnType("int");
+                        .HasColumnType("integer");
 
                     b.HasKey("AddressId");
 
@@ -70,13 +70,13 @@ namespace DbContext.Migrations.MySqlDbContext
                 {
                     b.Property<Guid>("FriendId")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("char(36)");
+                        .HasColumnType("uuid");
 
                     b.Property<Guid?>("AddressId")
-                        .HasColumnType("char(36)");
+                        .HasColumnType("uuid");
 
                     b.Property<DateTime?>("Birthday")
-                        .HasColumnType("datetime(6)");
+                        .HasColumnType("timestamp with time zone");
 
                     b.Property<string>("Email")
                         .HasColumnType("varchar(200)");
@@ -88,7 +88,7 @@ namespace DbContext.Migrations.MySqlDbContext
                         .HasColumnType("varchar(200)");
 
                     b.Property<bool>("Seeded")
-                        .HasColumnType("tinyint(1)");
+                        .HasColumnType("boolean");
 
                     b.HasKey("FriendId");
 
@@ -101,19 +101,19 @@ namespace DbContext.Migrations.MySqlDbContext
                 {
                     b.Property<Guid>("PetId")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("char(36)");
+                        .HasColumnType("uuid");
 
                     b.Property<int>("Age")
-                        .HasColumnType("int");
+                        .HasColumnType("integer");
 
                     b.Property<int>("AnimalKind")
-                        .HasColumnType("int");
+                        .HasColumnType("integer");
 
                     b.Property<string>("AnimalKindString")
                         .HasColumnType("varchar(200)");
 
                     b.Property<int>("AnimalMood")
-                        .HasColumnType("int");
+                        .HasColumnType("integer");
 
                     b.Property<string>("AnimalMoodString")
                         .HasColumnType("varchar(200)");
@@ -122,10 +122,10 @@ namespace DbContext.Migrations.MySqlDbContext
                         .HasColumnType("varchar(200)");
 
                     b.Property<Guid?>("OwnerFriendId")
-                        .HasColumnType("char(36)");
+                        .HasColumnType("uuid");
 
                     b.Property<bool>("Seeded")
-                        .HasColumnType("tinyint(1)");
+                        .HasColumnType("boolean");
 
                     b.HasKey("PetId");
 
@@ -138,7 +138,7 @@ namespace DbContext.Migrations.MySqlDbContext
                 {
                     b.Property<Guid>("QuoteId")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("char(36)");
+                        .HasColumnType("uuid");
 
                     b.Property<string>("Author")
                         .HasColumnType("varchar(200)");

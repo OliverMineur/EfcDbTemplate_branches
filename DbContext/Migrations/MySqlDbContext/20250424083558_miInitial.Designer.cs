@@ -9,10 +9,10 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
 
-namespace DbContext.Migrations.SqlServerDbContext
+namespace DbContext.Migrations.MySqlDbContext
 {
-    [DbContext(typeof(MainDbContext.SqlServerDbContext))]
-    [Migration("20250423162139_miInitial")]
+    [DbContext(typeof(MainDbContext.MySqlDbContext))]
+    [Migration("20250424083558_miInitial")]
     partial class miInitial
     {
         /// <inheritdoc />
@@ -21,17 +21,17 @@ namespace DbContext.Migrations.SqlServerDbContext
 #pragma warning disable 612, 618
             modelBuilder
                 .HasAnnotation("ProductVersion", "9.0.4")
-                .HasAnnotation("Relational:MaxIdentifierLength", 128);
+                .HasAnnotation("Relational:MaxIdentifierLength", 64);
 
-            SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
+            MySqlModelBuilderExtensions.AutoIncrementColumns(modelBuilder);
 
             modelBuilder.Entity("FriendQuote", b =>
                 {
                     b.Property<Guid>("FriendsFriendId")
-                        .HasColumnType("uniqueidentifier");
+                        .HasColumnType("char(36)");
 
                     b.Property<Guid>("QuotesQuoteId")
-                        .HasColumnType("uniqueidentifier");
+                        .HasColumnType("char(36)");
 
                     b.HasKey("FriendsFriendId", "QuotesQuoteId");
 
@@ -44,19 +44,19 @@ namespace DbContext.Migrations.SqlServerDbContext
                 {
                     b.Property<Guid>("AddressId")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
+                        .HasColumnType("char(36)");
 
                     b.Property<string>("City")
-                        .HasColumnType("nvarchar(200)");
+                        .HasColumnType("varchar(200)");
 
                     b.Property<string>("Country")
-                        .HasColumnType("nvarchar(200)");
+                        .HasColumnType("varchar(200)");
 
                     b.Property<bool>("Seeded")
-                        .HasColumnType("bit");
+                        .HasColumnType("tinyint(1)");
 
                     b.Property<string>("Street")
-                        .HasColumnType("nvarchar(200)");
+                        .HasColumnType("varchar(200)");
 
                     b.Property<int>("ZipCode")
                         .HasColumnType("int");
@@ -70,25 +70,25 @@ namespace DbContext.Migrations.SqlServerDbContext
                 {
                     b.Property<Guid>("FriendId")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
+                        .HasColumnType("char(36)");
 
                     b.Property<Guid?>("AddressId")
-                        .HasColumnType("uniqueidentifier");
+                        .HasColumnType("char(36)");
 
                     b.Property<DateTime?>("Birthday")
-                        .HasColumnType("datetime2");
+                        .HasColumnType("datetime(6)");
 
                     b.Property<string>("Email")
-                        .HasColumnType("nvarchar(200)");
+                        .HasColumnType("varchar(200)");
 
                     b.Property<string>("FirstName")
-                        .HasColumnType("nvarchar(200)");
+                        .HasColumnType("varchar(200)");
 
                     b.Property<string>("LastName")
-                        .HasColumnType("nvarchar(200)");
+                        .HasColumnType("varchar(200)");
 
                     b.Property<bool>("Seeded")
-                        .HasColumnType("bit");
+                        .HasColumnType("tinyint(1)");
 
                     b.HasKey("FriendId");
 
@@ -101,7 +101,7 @@ namespace DbContext.Migrations.SqlServerDbContext
                 {
                     b.Property<Guid>("PetId")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
+                        .HasColumnType("char(36)");
 
                     b.Property<int>("Age")
                         .HasColumnType("int");
@@ -110,22 +110,22 @@ namespace DbContext.Migrations.SqlServerDbContext
                         .HasColumnType("int");
 
                     b.Property<string>("AnimalKindString")
-                        .HasColumnType("nvarchar(200)");
+                        .HasColumnType("varchar(200)");
 
                     b.Property<int>("AnimalMood")
                         .HasColumnType("int");
 
                     b.Property<string>("AnimalMoodString")
-                        .HasColumnType("nvarchar(200)");
+                        .HasColumnType("varchar(200)");
 
                     b.Property<string>("Name")
-                        .HasColumnType("nvarchar(200)");
+                        .HasColumnType("varchar(200)");
 
                     b.Property<Guid?>("OwnerFriendId")
-                        .HasColumnType("uniqueidentifier");
+                        .HasColumnType("char(36)");
 
                     b.Property<bool>("Seeded")
-                        .HasColumnType("bit");
+                        .HasColumnType("tinyint(1)");
 
                     b.HasKey("PetId");
 
@@ -138,13 +138,13 @@ namespace DbContext.Migrations.SqlServerDbContext
                 {
                     b.Property<Guid>("QuoteId")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
+                        .HasColumnType("char(36)");
 
                     b.Property<string>("Author")
-                        .HasColumnType("nvarchar(200)");
+                        .HasColumnType("varchar(200)");
 
                     b.Property<string>("QuoteText")
-                        .HasColumnType("nvarchar(200)");
+                        .HasColumnType("varchar(200)");
 
                     b.HasKey("QuoteId");
 

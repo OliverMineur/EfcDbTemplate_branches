@@ -3,16 +3,16 @@ using System;
 using DbContext;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
-using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
 #nullable disable
 
-namespace DbContext.Migrations.PostgresDbContext
+namespace DbContext.Migrations.SqlServerDbContext
 {
-    [DbContext(typeof(MainDbContext.PostgresDbContext))]
-    [Migration("20250423162250_miInitial")]
+    [DbContext(typeof(MainDbContext.SqlServerDbContext))]
+    [Migration("20250424083516_miInitial")]
     partial class miInitial
     {
         /// <inheritdoc />
@@ -21,17 +21,17 @@ namespace DbContext.Migrations.PostgresDbContext
 #pragma warning disable 612, 618
             modelBuilder
                 .HasAnnotation("ProductVersion", "9.0.4")
-                .HasAnnotation("Relational:MaxIdentifierLength", 63);
+                .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
-            NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);
+            SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
 
             modelBuilder.Entity("FriendQuote", b =>
                 {
                     b.Property<Guid>("FriendsFriendId")
-                        .HasColumnType("uuid");
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<Guid>("QuotesQuoteId")
-                        .HasColumnType("uuid");
+                        .HasColumnType("uniqueidentifier");
 
                     b.HasKey("FriendsFriendId", "QuotesQuoteId");
 
@@ -44,22 +44,22 @@ namespace DbContext.Migrations.PostgresDbContext
                 {
                     b.Property<Guid>("AddressId")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("uuid");
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("City")
-                        .HasColumnType("varchar(200)");
+                        .HasColumnType("nvarchar(200)");
 
                     b.Property<string>("Country")
-                        .HasColumnType("varchar(200)");
+                        .HasColumnType("nvarchar(200)");
 
                     b.Property<bool>("Seeded")
-                        .HasColumnType("boolean");
+                        .HasColumnType("bit");
 
                     b.Property<string>("Street")
-                        .HasColumnType("varchar(200)");
+                        .HasColumnType("nvarchar(200)");
 
                     b.Property<int>("ZipCode")
-                        .HasColumnType("integer");
+                        .HasColumnType("int");
 
                     b.HasKey("AddressId");
 
@@ -70,25 +70,25 @@ namespace DbContext.Migrations.PostgresDbContext
                 {
                     b.Property<Guid>("FriendId")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("uuid");
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<Guid?>("AddressId")
-                        .HasColumnType("uuid");
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<DateTime?>("Birthday")
-                        .HasColumnType("timestamp with time zone");
+                        .HasColumnType("datetime2");
 
                     b.Property<string>("Email")
-                        .HasColumnType("varchar(200)");
+                        .HasColumnType("nvarchar(200)");
 
                     b.Property<string>("FirstName")
-                        .HasColumnType("varchar(200)");
+                        .HasColumnType("nvarchar(200)");
 
                     b.Property<string>("LastName")
-                        .HasColumnType("varchar(200)");
+                        .HasColumnType("nvarchar(200)");
 
                     b.Property<bool>("Seeded")
-                        .HasColumnType("boolean");
+                        .HasColumnType("bit");
 
                     b.HasKey("FriendId");
 
@@ -101,31 +101,31 @@ namespace DbContext.Migrations.PostgresDbContext
                 {
                     b.Property<Guid>("PetId")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("uuid");
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<int>("Age")
-                        .HasColumnType("integer");
+                        .HasColumnType("int");
 
                     b.Property<int>("AnimalKind")
-                        .HasColumnType("integer");
+                        .HasColumnType("int");
 
                     b.Property<string>("AnimalKindString")
-                        .HasColumnType("varchar(200)");
+                        .HasColumnType("nvarchar(200)");
 
                     b.Property<int>("AnimalMood")
-                        .HasColumnType("integer");
+                        .HasColumnType("int");
 
                     b.Property<string>("AnimalMoodString")
-                        .HasColumnType("varchar(200)");
+                        .HasColumnType("nvarchar(200)");
 
                     b.Property<string>("Name")
-                        .HasColumnType("varchar(200)");
+                        .HasColumnType("nvarchar(200)");
 
                     b.Property<Guid?>("OwnerFriendId")
-                        .HasColumnType("uuid");
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<bool>("Seeded")
-                        .HasColumnType("boolean");
+                        .HasColumnType("bit");
 
                     b.HasKey("PetId");
 
@@ -138,13 +138,13 @@ namespace DbContext.Migrations.PostgresDbContext
                 {
                     b.Property<Guid>("QuoteId")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("uuid");
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("Author")
-                        .HasColumnType("varchar(200)");
+                        .HasColumnType("nvarchar(200)");
 
                     b.Property<string>("QuoteText")
-                        .HasColumnType("varchar(200)");
+                        .HasColumnType("nvarchar(200)");
 
                     b.HasKey("QuoteId");
 
