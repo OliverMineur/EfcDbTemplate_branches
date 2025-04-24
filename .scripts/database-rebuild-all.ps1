@@ -42,7 +42,7 @@ dotnet ef migrations add miInitial -c $DBContext -p ../DbContext -s ../DbContext
 dotnet ef database update -c $DBContext -p ../DbContext -s ../DbContext
 
 # Check for 'seed' argument and seed the database if present
-if ($args[1] -eq "seed") {
+if ($args[0] -eq "seed") {
     # Seed the database
     Set-Location ../AppSeeder
     dotnet run
