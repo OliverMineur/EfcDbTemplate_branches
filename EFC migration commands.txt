@@ -2,7 +2,7 @@
 On Mac open a terminal in DbContext project.
 
 
-macOS Database migrations.
+VSCode Database migrations.
 --------------------------------
 On macOS in the terminal, type below commands. After each migration you will get a success confirmation from EFC.
 Use command depending on your database.
@@ -20,22 +20,7 @@ SQLite:
 dotnet ef migrations add initial_migration --context SqliteDbContext --output-dir Migrations/SqliteMigrations
 
 
-Windows Database migrations.
-----------------------------------
-On Windows in the PCM terminal, type below commands. After each migration you will get a success confirmation from EFC.
-Use command depending on your database.
 
-SQLServer:
-add-migration initial_migration -context SqlServerDbContext -outputdir Migrations/SqlServerMigrations
-
-MariaDb:
-add-migration initial_migration --context MySqlDbContext --outputdir Migrations/MySqlMigrations
-
-Postgres:
-add-migration initial_migration --context PostgresDbContext --outputdir Migrations/PostgresMigrations
-
-SQLite:
-add-migration initial_migration --context SqliteDbContext --outputdir Migrations/SqliteMigrations
 
 
 
