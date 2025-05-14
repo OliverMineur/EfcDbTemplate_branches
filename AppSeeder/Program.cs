@@ -65,60 +65,35 @@ namespace AppConsole
 
 
         #region Update to reflect you new Model
-        private static void WriteModel(List<Friend> modelList)
+        private static void WriteModel(List<Car> modelList)
         {
-            Console.WriteLine($"NrOfFriends: {modelList.Count()}");
-            Console.WriteLine($"NrOfFriends without any pets: {modelList.Count(
-                f => f.Pets == null || f.Pets?.Count == 0)}");
-            Console.WriteLine($"NrOfFriends without an adress: {modelList.Count(
-                f => f.Address == null)}");
+            Console.WriteLine($"NrOfCars: {modelList.Count()}");
                
-            Console.WriteLine($"First Friend: {modelList.First()}");
-            Console.WriteLine($"Last Friend: {modelList.Last()}");
+            Console.WriteLine($"First Car: {modelList.First().RegNumber} owned by {modelList.First().Owner.Name}");
+            Console.WriteLine($"Last Car: {modelList.Last().RegNumber} owned by {modelList.First().Owner.Name}");
         }
 
-        private static List<Friend> SeedModel(int nrItems)
+        private static List<Car> SeedModel(int nrItems)
         {
             var seeder = new SeedGenerator();
             
-            //Create a list of friends, adresses and pets
-            var goodfriends = seeder.ItemsToList<Friend>(nrItems);
-            var addresses = seeder.ItemsToList<Address>(nrItems);
-
-            var _quotes = seeder.AllQuotes.Select (q => new Quote() { QuoteText = q.Quote, Author = q.Author}).ToList(); 
-
-            //Assign adress and pet to friends
-            for (int i = 0; i < nrItems; i++)
+            //Seed Cars
+            var cars = seeder.ItemsToList<Car>(nrItems);
+            foreach (var item in cars)
             {
-                //assign an address randomly
-                goodfriends[i].Address = (seeder.Bool) ? seeder.FromList(addresses) :null;
-
-                //Create between 0 and 3 pets
-                var _pets = new List<Pet>();
-                for (int c = 0; c < seeder.Next(0,4); c++)
-                {
-                    _pets.Add(new Pet().Seed(seeder)); 
-                }
-                goodfriends[i].Pets = (_pets.Count > 0) ? _pets : null;
-
-                //Quotes
-                goodfriends[i].Quotes = new List<Quote>();
-                for (int c = 0; c < seeder.Next(0,6); c++)
-                {
-                    var q = seeder.FromList(_quotes); 
-                    goodfriends[i].Quotes.Add(q);
-                }
+                item.Owner = new Owner().Seed(seeder);
             }
-            return goodfriends;
+
+            return cars;
         }
-        private static async Task SeedDataBase(List<Friend> _modelList)
+        private static async Task SeedDataBase(List<Car> _modelList)
         {
             using (var db = MainDbContext.DbContext())
             {
                 #region move the seeded model into the database using EFC
                 foreach (var item in _modelList)
                 {
-                    db.Friends.Add(item);
+                    db.Cars.Add(item);
                 }
                 #endregion
 
@@ -132,10 +107,8 @@ namespace AppConsole
             using (var db = MainDbContext.DbContext())
             {
                 #region Reading the database using EFC
-                var _modelList = await db.Friends
-                    .Include(item => item.Address)
-                    .Include(item => item.Pets)
-                    .Include(item => item.Quotes)
+                var _modelList = await db.Cars
+                    .Include(x => x.Owner)
                     .ToListAsync();                
                 #endregion
 

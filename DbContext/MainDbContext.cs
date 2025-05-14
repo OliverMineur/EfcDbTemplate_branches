@@ -12,10 +12,8 @@ namespace DbContext;
 public class MainDbContext : Microsoft.EntityFrameworkCore.DbContext
 {
     #region class - Table mapping
-    public DbSet<Friend> Friends { get; set; }
-    public DbSet<Address> Addresses { get; set; }
-    public DbSet<Pet> Pets { get; set; }
-    public DbSet<Quote> Quotes { get; set; }
+    public DbSet<Car> Cars { get; set; }
+    public DbSet<Owner> Owners { get; set; }
     #endregion
 
     #region get right DBContext from DbSet configuration in Appsettings
