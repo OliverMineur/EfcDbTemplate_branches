@@ -14,6 +14,7 @@ public class MainDbContext : Microsoft.EntityFrameworkCore.DbContext
     #region class - Table mapping
     public DbSet<Car> Cars { get; set; }
     public DbSet<Owner> Owners { get; set; }
+    public DbSet<Garage> Garages{ get; set; }
     #endregion
 
     #region get right DBContext from DbSet configuration in Appsettings

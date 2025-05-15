@@ -10,10 +10,14 @@ namespace Models
         [Key]
         public Guid OwnerId {get; set;}
 
-        public string Name {get; set;}
+        public string FirstName {get; set;}
+        
+        public string LastName {get; set;} 
+
+        public int Age {get; set;}
 
         //Nav props
-        public List<Car> Cars {get; set;} = null;
+        public List<Car> Cars { get; set; } = null;
 
 
         public bool Seeded { get; set; } = false;
@@ -22,7 +26,9 @@ namespace Models
         {
             return new Owner{
                 OwnerId = Guid.NewGuid(),
-                Name = seeder.FullName,
+                FirstName = seeder.FirstName,
+                LastName = seeder.LastName,
+                Age = seeder.Next(18, 60),
                 Seeded = true
             };
         }
