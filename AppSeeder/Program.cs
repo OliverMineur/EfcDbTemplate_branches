@@ -34,7 +34,6 @@ namespace AppConsole
 
             Console.WriteLine($"\nSeeding the Model...");
             var modelList = SeedModel(nrItemsSeed);
-            //var garageList = Makegarage(nrOfGarage, modelList);
 
             Console.WriteLine($"\nTesting Model...");
             WriteModel(modelList);
@@ -50,7 +49,6 @@ namespace AppConsole
             try
             {
                 SeedDataBase(modelList).Wait();
-                //SeedDataBaseGarage(garageList).Wait();
             }
             catch (Exception ex)
             {
@@ -75,23 +73,6 @@ namespace AppConsole
             Console.WriteLine($"First Car: {modelList.First().RegNumber} owned by {modelList.First().Owner.FirstName}");
             Console.WriteLine($"Last Car: {modelList.Last().RegNumber} owned by {modelList.Last().Owner.FirstName}");
         }
-
-        // private static List<Garage> Makegarage(int nrItems, List<Car> cars) {
-
-        //     var seeder = new SeedGenerator();
-
-        //     var garages = seeder.ItemsToList<Garage>(nrItems);
-        //     foreach (var item in garages)
-        //     {
-        //         item.Cars = new List<Car>();
-        //         int tempNum = seeder.Next(1, 100);
-        //         if (tempNum > 75)
-        //         {
-                    
-        //         }
-        //     }
-        //     return garages;
-        // }
 
         private static List<Car> SeedModel(int nrItems)
         {
